@@ -1547,7 +1547,10 @@ hook.Add("InitPostEntity", "CustomRolesLocalLoad", function()
     -- Request missing cvar data, if we have any
     if table.Count(missing_cvars) > 0 then
         net.Receive("ULX_CRCVarRequest", function()
-            local results = net.ReadTable()
+            local len = net.ReadUInt(16)
+            local compressedString = net.ReadData(len)
+            local cvarJSON = util.Decompress(compressedString)
+            local results = util.JSONToTable(cvarJSON)
 
             for cv, data in pairs(results) do
                 -- Make sure each of these actually has the control reference
@@ -1581,8 +1584,12 @@ hook.Add("InitPostEntity", "CustomRolesLocalLoad", function()
             table.insert(net_table, k)
         end
 
+        local cvarJSON = util.TableToJSON(net_table)
+        local compressedString = util.Compress(cvarJSON)
+        local compressedLen = #compressedString
         net.Start("ULX_CRCVarRequest")
-        net.WriteTable(net_table)
+        net.WriteUInt(compressedLen, 16)
+        net.WriteData(compressedString, compressedLen)
         net.SendToServer()
     end
 end)
