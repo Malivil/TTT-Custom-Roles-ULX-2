@@ -295,7 +295,7 @@ end
 xgui.addSVModule("terrortown", init)
 
 net.Receive("ULX_CRCVarRequest", function(len, ply)
-    compressedLen = net.ReadUInt(16)
+    local compressedLen = net.ReadUInt(16)
     local compressedString = net.ReadData(compressedLen)
     local cvarJSON = util.Decompress(compressedString)
     local missing_cvars = util.JSONToTable(cvarJSON)
