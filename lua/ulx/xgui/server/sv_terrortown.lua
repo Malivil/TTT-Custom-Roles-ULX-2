@@ -1,4 +1,6 @@
 util.AddNetworkString("ULX_CRCVarRequest")
+util.AddNetworkString("ULX_CRCVarPart")
+util.AddNetworkString("ULX_CRCVarComplete")
 
 local function CreateReplicatedWritableCvar(convar)
     if not ConVarExists(convar) then
@@ -320,4 +322,39 @@ net.Receive("ULX_CRCVarRequest", function(len, ply)
     net.WriteUInt(compressedLen, 16)
     net.WriteData(compressedString, compressedLen)
     net.Send(ply)
+
+    timer.Simple(1, function()
+        if not IsValid(ply) then return end
+
+        print("[CR4TTT ULX] Transfering CR4TTT addon tables to: " .. tostring(ply))
+
+        local blockSize = 2560
+        local blockDelay = 1
+        local idx = 1
+        local parts = math.ceil(compressedLen / blockSize)
+        timer.Create("ULX_CRCVarTransfer_" .. ply:EntIndex(), blockDelay, parts, function()
+            if not IsValid(ply) then return end
+
+            local sendSize = compressedLen
+            if sendSize > blockSize then
+                sendSize = blockSize
+            end
+
+            net.Start("ULX_CRCVarPart")
+            net.WriteUInt(sendSize, 16)
+            net.WriteData(string.sub(compressedString, idx, idx + sendSize))
+            net.Send(ply)
+
+            -- Move up the string
+            idx = idx + sendSize
+
+            -- Keep track of how much we've sent
+            compressedLen = compressedLen - sendSize
+            -- If we've sent everything, tell the client
+            if compressedLen <= 0 then
+                net.Start("ULX_CRCVarComplete")
+                net.Send(ply)
+            end
+        end)
+    end)
 end)

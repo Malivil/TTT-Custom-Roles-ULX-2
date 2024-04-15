@@ -1548,51 +1548,63 @@ hook.Add("InitPostEntity", "CustomRolesLocalLoad", function()
     AddMiscModule()
 
     -- Request missing cvar data, if we have any
-    if table.Count(missing_cvars) > 0 then
-        net.Receive("ULX_CRCVarRequest", function()
-            local len = net.ReadUInt(16)
-            local compressedString = net.ReadData(len)
-            local cvarJSON = util.Decompress(compressedString)
-            local results = util.JSONToTable(cvarJSON)
+    if table.Count(missing_cvars) <= 0 then return end
 
-            for cv, data in pairs(results) do
-                -- Make sure each of these actually has the control reference
-                local control = missing_cvars[cv]
-                if control and type(control) ~= "boolean" then
-                    -- Update whichever portions were sent back from the server
-                    if data.d then
-                        control:SetText(cv .. " (def. " .. data.d .. ")")
-                    end
-
-                    if data.m and control.SetMin then
-                        control:SetMin(data.m)
-                    end
-
-                    if data.x and control.SetMax then
-                        control:SetMax(data.x)
-                    end
-
-                    -- Make sure everything is the correct size now that we changed things
-                    if control.Label then
-                        control.Label:SizeToContents()
-                    end
-                    control:SizeToContents()
-                end
-            end
-        end)
-
-        -- Convert from a lookup table to an indexed table
-        local net_table = {}
-        for k, _ in pairs(missing_cvars) do
-            table.insert(net_table, k)
-        end
-
-        local cvarJSON = util.TableToJSON(net_table)
-        local compressedString = util.Compress(cvarJSON)
-        local compressedLen = #compressedString
-        net.Start("ULX_CRCVarRequest")
-        net.WriteUInt(compressedLen, 16)
-        net.WriteData(compressedString, compressedLen)
-        net.SendToServer()
+    -- Convert from a lookup table to an indexed table
+    local net_table = {}
+    for k, _ in pairs(missing_cvars) do
+        table.insert(net_table, k)
     end
+
+    local cvarJSON = util.TableToJSON(net_table)
+    local compressedString = util.Compress(cvarJSON)
+    local compressedLen = #compressedString
+    net.Start("ULX_CRCVarRequest")
+    net.WriteUInt(compressedLen, 16)
+    net.WriteData(compressedString, compressedLen)
+    net.SendToServer()
+end)
+
+local compressedString = ""
+net.Receive("ULX_CRCVarPart", function()
+    local len = net.ReadUInt(16)
+    compressedString = compressedString .. net.ReadData(len)
+end)
+
+net.Receive("ULX_CRCVarComplete", function()
+    print("[CR4TTT ULX] Final part received, reloading...")
+
+    local cvarJSON = util.Decompress(compressedString)
+    local results = util.JSONToTable(cvarJSON)
+
+    for cv, data in pairs(results) do
+        -- Make sure each of these actually has the control reference
+        local control = missing_cvars[cv]
+        if control and type(control) ~= "boolean" then
+            -- Update whichever portions were sent back from the server
+            if data.d then
+                control:SetText(cv .. " (def. " .. data.d .. ")")
+            end
+
+            if data.m and control.SetMin then
+                control:SetMin(data.m)
+            end
+
+            if data.x and control.SetMax then
+                control:SetMax(data.x)
+            end
+
+            -- Make sure everything is the correct size now that we changed things
+            if control.Label then
+                control.Label:SizeToContents()
+            end
+            control:SizeToContents()
+        end
+    end
+
+    -- Reload the modules since by this time its usually loaded already
+    xgui.processModules()
+
+    -- Reset the compressed string to save space
+    compressedString = ""
 end)
