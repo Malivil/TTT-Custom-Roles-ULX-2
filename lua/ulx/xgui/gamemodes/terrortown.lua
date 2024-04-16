@@ -1003,11 +1003,14 @@ local function AddDna(gppnl)
     local dnakbt = xlib.makeslider { label = "ttt_killer_dna_basetime (def. 100)", min = 10, max = 200, repconvar = "rep_ttt_killer_dna_basetime", parent = gpdnalst }
     gpdnalst:AddItem(dnakbt)
 
+    local dnasdl = xlib.makecheckbox { label = "ttt_dna_scan_detectives_loadout (def. 0)", repconvar = "rep_ttt_dna_scan_detectives_loadout", parent = gpdnalst }
+    gpdnalst:AddItem(dnasdl)
+
     local dnasid = xlib.makecheckbox { label = "ttt_dna_scan_on_dialog (def. 1)", repconvar = "rep_ttt_dna_scan_on_dialog", parent = gpdnalst }
     gpdnalst:AddItem(dnasid)
 
-    local dnasdl = xlib.makecheckbox { label = "ttt_dna_scan_detectives_loadout (def. 0)", repconvar = "rep_ttt_dna_scan_detectives_loadout", parent = gpdnalst }
-    gpdnalst:AddItem(dnasdl)
+    local dnasodod = xlib.makecheckbox { label = "ttt_dna_scan_only_drop_on_death (def. 0)", repconvar = "rep_ttt_dna_scan_only_drop_on_death", parent = gpdnalst }
+    gpdnalst:AddItem(dnasodod)
 end
 
 local function AddVoiceChat(gppnl)
