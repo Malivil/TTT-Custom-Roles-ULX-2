@@ -600,7 +600,7 @@ end
 local function AddDetectiveProperties(gppnl)
     local detective_roles = GetSortedTeamRoles(DETECTIVE_ROLES)
     local role_cvars, num_count, bool_count, text_count, dropdown_count = GetRoleConVars(detective_roles)
-    local height = 186 + (#CORPSE_ICON_TYPES * 20) + GetRoleConVarsHeight(role_cvars, num_count, bool_count, text_count, dropdown_count)
+    local height = 206 + (#CORPSE_ICON_TYPES * 20) + GetRoleConVarsHeight(role_cvars, num_count, bool_count, text_count, dropdown_count)
     local detpropclp = vgui.Create("DCollapsibleCategory", gppnl)
     detpropclp:SetSize(390, height)
     detpropclp:SetExpanded(1)
@@ -641,6 +641,9 @@ local function AddDetectiveProperties(gppnl)
 
     local bnsrch = xlib.makecheckbox { label = "ttt_all_search_binoc (def. 0)", repconvar = "rep_ttt_all_search_binoc", parent = detproplst }
     detproplst:AddItem(bnsrch)
+
+    local dnasrch = xlib.makecheckbox { label = "ttt_all_search_dnascanner (def. 0)", repconvar = "rep_ttt_all_search_dnascanner", parent = detproplst }
+    detproplst:AddItem(dnasrch)
 
     for _, r in ipairs(detective_roles) do
         if role_cvars[r] then

@@ -118,6 +118,7 @@ local function init()
         CreateReplicatedWritableCvar("ttt_special_detectives_armor_loadout")
         CreateReplicatedWritableCvar("ttt_all_search_postround")
         CreateReplicatedWritableCvar("ttt_all_search_binoc")
+        CreateReplicatedWritableCvar("ttt_all_search_dnascanner")
 
         --jester properties
         CreateReplicatedWritableCvar("ttt_jesters_trigger_traitor_testers")
