@@ -1557,7 +1557,11 @@ hook.Add("InitPostEntity", "CustomRolesLocalLoad", function()
     AddMiscModule()
 end)
 
+local opened = false
 xgui.hookEvent("onOpen", nil, function()
+    if opened then return end
+    opened = true
+
     -- Request missing cvar data, if we have any
     if table.Count(missing_cvars) <= 0 then return end
 
@@ -1618,6 +1622,7 @@ net.Receive("ULX_CRCVarComplete", function()
     -- Reload the modules since by this time its usually loaded already
     xgui.processModules()
 
-    -- Reset the compressed string to save space
+    -- Reset the compressed string and missing convars table to save space
     compressedString = ""
+    table.Empty(missing_cvars)
 end)
