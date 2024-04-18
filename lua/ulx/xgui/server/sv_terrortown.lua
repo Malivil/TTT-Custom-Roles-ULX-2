@@ -332,12 +332,8 @@ net.Receive("ULX_CRCVarRequest", function(len, ply)
         print("[CR4TTT ULX] Transfering CR4TTT addon tables to: " .. tostring(ply))
 
         local blockSize = 2560
-        local blockDelay = 1
         local idx = 1
-        local parts = math.ceil(compressedLen / blockSize)
-        timer.Create("ULX_CRCVarTransfer_" .. ply:EntIndex(), blockDelay, parts, function()
-            if not IsValid(ply) then return end
-
+        while (compressedLen > 0) do
             local sendSize = compressedLen
             if sendSize > blockSize then
                 sendSize = blockSize
@@ -353,11 +349,10 @@ net.Receive("ULX_CRCVarRequest", function(len, ply)
 
             -- Keep track of how much we've sent
             compressedLen = compressedLen - sendSize
-            -- If we've sent everything, tell the client
-            if compressedLen <= 0 then
-                net.Start("ULX_CRCVarComplete")
-                net.Send(ply)
-            end
-        end)
+        end
+
+        -- We've sent everything, so tell the client
+        net.Start("ULX_CRCVarComplete")
+        net.Send(ply)
     end)
 end)

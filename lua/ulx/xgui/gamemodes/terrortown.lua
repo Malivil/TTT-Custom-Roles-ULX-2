@@ -1555,9 +1555,13 @@ hook.Add("InitPostEntity", "CustomRolesLocalLoad", function()
     AddPropPossessionModule()
     AddAdminModule()
     AddMiscModule()
+end)
 
+xgui.hookEvent("onOpen", nil, function()
     -- Request missing cvar data, if we have any
     if table.Count(missing_cvars) <= 0 then return end
+
+    print("[CR4TTT ULX] Requesting missing information...")
 
     -- Convert from a lookup table to an indexed table
     local net_table = {}
@@ -1572,7 +1576,7 @@ hook.Add("InitPostEntity", "CustomRolesLocalLoad", function()
     net.WriteUInt(compressedLen, 16)
     net.WriteData(compressedString, compressedLen)
     net.SendToServer()
-end)
+end, "CR4TTTULXOpen")
 
 local compressedString = ""
 net.Receive("ULX_CRCVarPart", function()
