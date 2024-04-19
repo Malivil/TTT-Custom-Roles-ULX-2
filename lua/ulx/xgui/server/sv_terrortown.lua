@@ -1,4 +1,6 @@
 util.AddNetworkString("ULX_CRCVarRequest")
+util.AddNetworkString("ULX_CRCVarPart")
+util.AddNetworkString("ULX_CRCVarComplete")
 
 local function CreateReplicatedWritableCvar(convar)
     if not ConVarExists(convar) then
@@ -116,6 +118,7 @@ local function init()
         CreateReplicatedWritableCvar("ttt_special_detectives_armor_loadout")
         CreateReplicatedWritableCvar("ttt_all_search_postround")
         CreateReplicatedWritableCvar("ttt_all_search_binoc")
+        CreateReplicatedWritableCvar("ttt_all_search_dnascanner")
 
         --jester properties
         CreateReplicatedWritableCvar("ttt_jesters_trigger_traitor_testers")
@@ -172,7 +175,9 @@ local function init()
         --dna
         CreateReplicatedWritableCvar("ttt_killer_dna_range")
         CreateReplicatedWritableCvar("ttt_killer_dna_basetime")
+        CreateReplicatedWritableCvar("ttt_dna_scan_detectives_loadout")
         CreateReplicatedWritableCvar("ttt_dna_scan_on_dialog")
+        CreateReplicatedWritableCvar("ttt_dna_scan_only_drop_on_death")
 
         --voicechat battery
         CreateReplicatedWritableCvar("ttt_voice_drain")
@@ -320,4 +325,34 @@ net.Receive("ULX_CRCVarRequest", function(len, ply)
     net.WriteUInt(compressedLen, 16)
     net.WriteData(compressedString, compressedLen)
     net.Send(ply)
+
+    timer.Simple(1, function()
+        if not IsValid(ply) then return end
+
+        print("[CR4TTT ULX] Transfering CR4TTT addon tables to: " .. tostring(ply))
+
+        local blockSize = 2560
+        local idx = 1
+        while (compressedLen > 0) do
+            local sendSize = compressedLen
+            if sendSize > blockSize then
+                sendSize = blockSize
+            end
+
+            net.Start("ULX_CRCVarPart")
+            net.WriteUInt(sendSize, 16)
+            net.WriteData(string.sub(compressedString, idx, idx + sendSize))
+            net.Send(ply)
+
+            -- Move up the string
+            idx = idx + sendSize
+
+            -- Keep track of how much we've sent
+            compressedLen = compressedLen - sendSize
+        end
+
+        -- We've sent everything, so tell the client
+        net.Start("ULX_CRCVarComplete")
+        net.Send(ply)
+    end)
 end)
