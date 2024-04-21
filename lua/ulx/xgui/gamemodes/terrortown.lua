@@ -1454,13 +1454,13 @@ local function AddMiscModule()
     bemlst:AddItem(bemsize)
 
     local miscclp = vgui.Create("DCollapsibleCategory", miscpnl)
-    miscclp:SetSize(390, 438)
+    miscclp:SetSize(390, 558)
     miscclp:SetExpanded(1)
     miscclp:SetLabel("Miscellaneous")
 
     local misclst = vgui.Create("DPanelList", miscclp)
     misclst:SetPos(5, 25)
-    misclst:SetSize(390, 438)
+    misclst:SetSize(390, 558)
     misclst:SetSpacing(5)
 
     local miscdh = xlib.makecheckbox { label = "ttt_detective_hats (def. 0)", repconvar = "rep_ttt_detective_hats", parent = misclst }
@@ -1523,6 +1523,24 @@ local function AddMiscModule()
 
     local misccsns = xlib.makecheckbox { label = "ttt_corpse_search_not_shared (def. 0)", repconvar = "rep_ttt_corpse_search_not_shared", parent = misclst }
     misclst:AddItem(misccsns)
+
+    local misccskttid = xlib.makecheckbox { label = "ttt_corpse_search_killer_team_text_independent (def. 0)", repconvar = "rep_ttt_corpse_search_killer_team_text_independent", parent = misclst }
+    misclst:AddItem(misccskttid)
+
+    local misccskttin = xlib.makecheckbox { label = "ttt_corpse_search_killer_team_text_innocent (def. 0)", repconvar = "rep_ttt_corpse_search_killer_team_text_innocent", parent = misclst }
+    misclst:AddItem(misccskttin)
+
+    local misccskttj = xlib.makecheckbox { label = "ttt_corpse_search_killer_team_text_jester (def. 0)", repconvar = "rep_ttt_corpse_search_killer_team_text_jester", parent = misclst }
+    misclst:AddItem(misccskttj)
+
+    local misccskttm = xlib.makecheckbox { label = "ttt_corpse_search_killer_team_text_monster (def. 0)", repconvar = "rep_ttt_corpse_search_killer_team_text_monster", parent = misclst }
+    misclst:AddItem(misccskttm)
+
+    local misccskttt = xlib.makecheckbox { label = "ttt_corpse_search_killer_team_text_traitor (def. 0)", repconvar = "rep_ttt_corpse_search_killer_team_text_traitor", parent = misclst }
+    misclst:AddItem(misccskttt)
+
+    local misccskttp = xlib.makecheckbox { label = "ttt_corpse_search_killer_team_text_plain (def. 0)", repconvar = "rep_ttt_corpse_search_killer_team_text_plain", parent = misclst }
+    misclst:AddItem(misccskttp)
 
     --Disable Features
     local dfclp = vgui.Create("DCollapsibleCategory", miscpnl)
