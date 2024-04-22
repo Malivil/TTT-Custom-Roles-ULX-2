@@ -1457,13 +1457,13 @@ local function AddMiscModule()
     bemlst:AddItem(bemsize)
 
     local miscclp = vgui.Create("DCollapsibleCategory", miscpnl)
-    miscclp:SetSize(390, 558)
+    miscclp:SetSize(390, 658)
     miscclp:SetExpanded(1)
     miscclp:SetLabel("Miscellaneous")
 
     local misclst = vgui.Create("DPanelList", miscclp)
     misclst:SetPos(5, 25)
-    misclst:SetSize(390, 558)
+    misclst:SetSize(390, 658)
     misclst:SetSpacing(5)
 
     local miscdh = xlib.makecheckbox { label = "ttt_detective_hats (def. 0)", repconvar = "rep_ttt_detective_hats", parent = misclst }
@@ -1526,6 +1526,21 @@ local function AddMiscModule()
 
     local misccsns = xlib.makecheckbox { label = "ttt_corpse_search_not_shared (def. 0)", repconvar = "rep_ttt_corpse_search_not_shared", parent = misclst }
     misclst:AddItem(misccsns)
+
+    local misccsttid = xlib.makecheckbox { label = "ttt_corpse_search_team_text_independent (def. 0)", repconvar = "rep_ttt_corpse_search_team_text_independent", parent = misclst }
+    misclst:AddItem(misccsttid)
+
+    local misccsttin = xlib.makecheckbox { label = "ttt_corpse_search_team_text_innocent (def. 0)", repconvar = "rep_ttt_corpse_search_team_text_innocent", parent = misclst }
+    misclst:AddItem(misccsttin)
+
+    local misccsttj = xlib.makecheckbox { label = "ttt_corpse_search_team_text_jester (def. 0)", repconvar = "rep_ttt_corpse_search_team_text_jester", parent = misclst }
+    misclst:AddItem(misccsttj)
+
+    local misccsttm = xlib.makecheckbox { label = "ttt_corpse_search_team_text_monster (def. 0)", repconvar = "rep_ttt_corpse_search_team_text_monster", parent = misclst }
+    misclst:AddItem(misccsttm)
+
+    local misccsttt = xlib.makecheckbox { label = "ttt_corpse_search_team_text_traitor (def. 0)", repconvar = "rep_ttt_corpse_search_team_text_traitor", parent = misclst }
+    misclst:AddItem(misccsttt)
 
     local misccskttid = xlib.makecheckbox { label = "ttt_corpse_search_killer_team_text_independent (def. 0)", repconvar = "rep_ttt_corpse_search_killer_team_text_independent", parent = misclst }
     misclst:AddItem(misccskttid)
