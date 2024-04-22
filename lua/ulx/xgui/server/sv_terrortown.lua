@@ -112,6 +112,7 @@ local function init()
         for _, dataType in ipairs(CORPSE_ICON_TYPES) do
             CreateReplicatedWritableCvar("ttt_detectives_search_only_" .. dataType)
         end
+        CreateReplicatedWritableCvar("ttt_detectives_corpse_call_expiration")
         CreateReplicatedWritableCvar("ttt_detectives_disable_looting")
         CreateReplicatedWritableCvar("ttt_detectives_hide_special_mode")
         CreateReplicatedWritableCvar("ttt_detectives_glow_enabled")
