@@ -1595,6 +1595,7 @@ end)
 
 local opened = false
 xgui.hookEvent("onOpen", nil, function()
+    if not LocalPlayer():IsAdmin() and not LocalPlayer():IsSuperAdmin() then return end
     if opened then return end
     opened = true
 
