@@ -1046,13 +1046,13 @@ end
 local function AddOtherGameplay(gppnl)
     --Other Gameplay Settings
     local gpogsclp = vgui.Create("DCollapsibleCategory", gppnl)
-    gpogsclp:SetSize(390, 290)
+    gpogsclp:SetSize(390, 310)
     gpogsclp:SetExpanded(0)
     gpogsclp:SetLabel("Other Gameplay Settings")
 
     local gpogslst = vgui.Create("DPanelList", gpogsclp)
     gpogslst:SetPos(5, 25)
-    gpogslst:SetSize(390, 290)
+    gpogslst:SetSize(390, 310)
     gpogslst:SetSpacing(5)
 
     local gpminply = xlib.makeslider { label = "ttt_minimum_players (def. 2)", min = 1, max = 10, repconvar = "rep_ttt_minimum_players", parent = gpogslst }
@@ -1087,6 +1087,9 @@ local function AddOtherGameplay(gppnl)
 
     local gpdnsr = xlib.makecheckbox { label = "ttt_death_notifier_show_role (def. 1)", repconvar = "rep_ttt_death_notifier_show_role", parent = gpogslst }
     gpogslst:AddItem(gpdnsr)
+
+    local gpdnst = xlib.makecheckbox { label = "ttt_death_notifier_show_team (def. 0)", repconvar = "rep_ttt_death_notifier_show_team", parent = gpogslst }
+    gpogslst:AddItem(gpdnst)
 
     local gpcmolbl = xlib.makelabel { label = "ttt_color_mode_override (def. none)", parent = gpogslst }
     gpogslst:AddItem(gpcmolbl)
