@@ -7,6 +7,8 @@ local function CreateReplicatedWritableCvar(convar)
         ErrorNoHalt("ConVar not found: " .. convar)
     end
 
+    if ULib.repcvars[convar] then return end
+
     ULib.replicatedWritableCvar(convar, "rep_" .. convar, GetConVar(convar):GetString(), false, false, "xgui_gmsettings")
 end
 
@@ -103,6 +105,10 @@ local function init()
                 CreateReplicatedWritableCvar("ttt_drunk_can_be_" .. rolestring)
             end
         end
+
+        CreateReplicatedWritableCvar("ttt_twins_enabled")
+        CreateReplicatedWritableCvar("ttt_twins_spawn_chance")
+        CreateReplicatedWritableCvar("ttt_twins_min_players")
 
         --traitor properties
         CreateReplicatedWritableCvar("ttt_traitors_vision_enabled")

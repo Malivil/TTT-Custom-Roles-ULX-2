@@ -436,6 +436,27 @@ local function AddMonsterSettings(gppnl)
     AddDefaultRoleSettings(monlst, monster_roles)
 end
 
+local function AddGroupedRoleSettings(gppnl)
+    local grpclp = vgui.Create("DCollapsibleCategory", gppnl)
+    grpclp:SetSize(390, 70)
+    grpclp:SetExpanded(1)
+    grpclp:SetLabel("Grouped Role Settings")
+
+    local grplst = vgui.Create("DPanelList", grpclp)
+    grplst:SetPos(5, 25)
+    grplst:SetSize(390, 70)
+    grplst:SetSpacing(5)
+
+    local enabled = xlib.makecheckbox { label = "ttt_twins_enabled (def. 0)", repconvar = "rep_ttt_twins_enabled", parent = grplst }
+    grplst:AddItem(enabled)
+
+    local spawn_chance = xlib.makeslider { label = "ttt_twins_spawn_chance (def. 0.1)", min = 0, max = 1, decimal = 2, repconvar = "rep_ttt_twins_spawn_chance", parent = grplst }
+    grplst:AddItem(spawn_chance)
+
+    local min_players = xlib.makeslider { label = "ttt_twins_min_players (def. 0)", min = 0, max = 10, repconvar = "rep_ttt_twins_min_players", parent = grplst }
+    grplst:AddItem(min_players)
+end
+
 local function AddRoleHealthSettings(gppnl)
     local rolehealthclp = vgui.Create("DCollapsibleCategory", gppnl)
     local modifiable_health_role_count = 0
@@ -1109,6 +1130,7 @@ local function AddGameplayModule()
     AddSpecialistInnocentSettings(gppnl)
     AddIndependentRoleSettings(gppnl)
     AddMonsterSettings(gppnl)
+    AddGroupedRoleSettings(gppnl)
     AddRoleHealthSettings(gppnl)
     AddTraitorProperties(gppnl)
     AddDetectiveProperties(gppnl)
